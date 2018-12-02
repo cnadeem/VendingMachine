@@ -5,7 +5,7 @@ using System.Web;
 
 namespace VendingMachine.Models
 {
-    public sealed class VendingMachines 
+    public sealed class VendingMachines
     {
         private static VendingMachines instance;
 
@@ -30,6 +30,7 @@ namespace VendingMachine.Models
                 instance = new VendingMachines();
             return instance;
         }
+
         public decimal MachineBank
         {
             get
@@ -37,6 +38,7 @@ namespace VendingMachine.Models
                 return this.machineBank;
             }
         }
+
         public Dictionary<Item, int> MachineItems
         {
             get
@@ -44,6 +46,7 @@ namespace VendingMachine.Models
                 return this.machineItems;
             }
         }
+
         public Stack<SaleRecord> SaleRecords
         {
             get
@@ -89,6 +92,7 @@ namespace VendingMachine.Models
 
             return -1;
         }
+
         public int GetTotalMachineItems()
         {
             int totalItems = 0;
@@ -100,24 +104,25 @@ namespace VendingMachine.Models
 
         public void RefillItems()
         {
-            machineItems.Clear();
-            this.machineItems.Add(new Item("Coca Cola 330", 5.30m), 20);
-            this.machineItems.Add(new Item("Coca Cola Zero", 5.30m), 20);
-            this.machineItems.Add(new Item("Fuze Tea 500", 5.30m), 20);
-            this.machineItems.Add(new Item("Pepsi Max 330", 5.30m), 20);
-            this.machineItems.Add(new Item("Pepsi Max 500", 5.30m), 20);
-            this.machineItems.Add(new Item("Evian 500", 5.30m), 20);
-            this.machineItems.Add(new Item("Lays Barbecue", 5.30m), 20);
-            this.machineItems.Add(new Item("Lays Barbecue", 5.30m), 20);
-            this.machineItems.Add(new Item("Lays Sour Cream & Onion", 5.30m), 20);
-            this.machineItems.Add(new Item("Coca Cola 330", 5.30m), 20);
-
+            this.machineItems.Add(new Item("Coca Cola", 5.30m), 20);
+            this.machineItems.Add(new Item("Thums Up", 6.30m), 20);
+            this.machineItems.Add(new Item("Fanta", 7.30m), 20);
+            this.machineItems.Add(new Item("Pepsi", 5.30m), 20);
+            this.machineItems.Add(new Item("Diet Pepsi", 5.30m), 20);
+            this.machineItems.Add(new Item("Evian", 5.30m), 20);
+            this.machineItems.Add(new Item("Mirinda", 5.30m), 20);
+            this.machineItems.Add(new Item("Spirit", 5.30m), 20);
+            this.machineItems.Add(new Item("Limca", 5.30m), 20);
+            this.machineItems.Add(new Item("Diet Coca Cola", 5.30m), 20);
+            ClearRecords();
         }
+
         public void SellItem(Item item, decimal amountPaid)
         {
             machineBank += item.ItemPrice;
             machineItems[item]--;
         }
+
         public void AddSaleRecord(SaleRecord saleRecord)
         {
             this.saleRecords.Push(saleRecord);
@@ -132,20 +137,27 @@ namespace VendingMachine.Models
         {
             this.cashPaymentRecords.Push(cashPaymentRecord);
         }
+
+        private void ClearRecords()
+        {
+            saleRecords.Clear();
+            cardPaymentRecords.Clear();
+            cashPaymentRecords.Clear();
+        }
+
         public override string ToString()
         {
             return string.Format("Unique Items: {0}, Total Items: {1}, Total Sales: {2}, Machine Bank: {3}",
                 machineItems.Count, GetTotalMachineItems(), saleRecords.Count, machineBank.ToString("C"));
         }
-
     }
 
-       
-  
 
-  
 
-   
 
-   
+
+
+
+
+
 }
