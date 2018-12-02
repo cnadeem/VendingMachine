@@ -4,4 +4,26 @@
 }
 
 <h2>Index</h2>
+@using (Html.BeginForm("Index", "VendingMachine", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+    <input type="submit" name="btnSubmit" value="Refill" class="btn btn-default" />
+    <input type="submit" name="btnSubmit" value="ViewProducts" class="btn btn-default" />
+    <input type="submit" name="btnSubmit" value="SaleRecords" class="btn btn-default" />
+    <input type="submit" name="btnSubmit" value="PaymentRecords" class="btn btn-default" />
+    <input type="submit" name="btnSubmit" value="VendingMachineDetails" class="btn btn-default" />
+    <br />
+    <label>Product ID</label>
+    <input type="text" name="productID" />
+    <label>Product Amount</label>
+    <input type="text" name="amount" />
+    <label>Payment Method</label>
+    <input type="text" name="paymentMethod" />
+    <input type="submit" name="btnSubmit" value="PurchaseProduct" class="btn btn-default"/>
+}
+@if (ViewBag.Result != null)
+{
+    <p>@ViewBag.Result</p>
+}
 

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace VendingMachine.Models
 {
-    public sealed class VendingMachines : IVendingMachineState
+    public sealed class VendingMachines 
     {
         private static VendingMachines instance;
 
@@ -15,8 +15,6 @@ namespace VendingMachine.Models
         private readonly Stack<CashPayment> cashPaymentRecords;
         private decimal machineBank;
 
-        private IVendingMachineState vendingMachineState;
-
         private VendingMachines()
         {
             this.machineItems = new Dictionary<Item, int>();
@@ -24,50 +22,122 @@ namespace VendingMachine.Models
             this.cardPaymentRecords = new Stack<CardPayment>();
             this.cashPaymentRecords = new Stack<CashPayment>();
             this.machineBank = 0;
-            vendingMachineState = new NoMoneyState();
         }
 
-        public IVendingMachineState getVendingMachineState()
+        public static VendingMachines GetInstance()
         {
-            return vendingMachineState;
+            if (instance == null)
+                instance = new VendingMachines();
+            return instance;
         }
-
-        private void setVendingMachineState(IVendingMachineState vendingMachineState)
+        public decimal MachineBank
         {
-            this.vendingMachineState = vendingMachineState;
-        }
-        public void dispenseProduct()
-        {
-            IVendingMachineState noMoneyState = new NoMoneyState();
-            vendingMachineState.dispenseProduct();
-
-            /*
-             * Product has been dispensed so vending Machine changed the 
-             * internal state to NoMoneyState 
-             */
-
-            if (vendingMachineState is HasMoneyState)
+            get
             {
-                setVendingMachineState(noMoneyState);
+                return this.machineBank;
+            }
+        }
+        public Dictionary<Item, int> MachineItems
+        {
+            get
+            {
+                return this.machineItems;
+            }
+        }
+        public Stack<SaleRecord> SaleRecords
+        {
+            get
+            {
+                return this.saleRecords;
             }
         }
 
-        public void selectProductAndInsertMoney(int amount, string productName)
+        public Stack<CardPayment> CardPaymentRecords
         {
-            vendingMachineState.selectProductAndInsertMoney(amount, productName);
-            IVendingMachineState hasMoneyState = new HasMoneyState();
-
-            /*
-             * The Money and product are provided hence it has changed it
-             * state from noMoneyState to hasMoneyState
-             */
-
-            if (vendingMachineState is NoMoneyState)
+            get
             {
-                setVendingMachineState(hasMoneyState);
+                return this.cardPaymentRecords;
             }
+        }
+        public Stack<CashPayment> CashPaymentRecords
+        {
+            get
+            {
+                return this.cashPaymentRecords;
+            }
+        }
+
+        public List<SaleRecord> GetLastSaleRecords()
+        {
+            return saleRecords.ToList();
+        }
+
+        public List<CardPayment> GetCardPaymentSaleRecords()
+        {
+            return cardPaymentRecords.ToList();
+        }
+
+        public List<CashPayment> GetCashPaymentSaleRecords()
+        {
+            return cashPaymentRecords.ToList();
+        }
+
+        public int GetItemStock(Item item)
+        {
+            if (machineItems.ContainsKey(item))
+                return machineItems[item];
+
+            return -1;
+        }
+        public int GetTotalMachineItems()
+        {
+            int totalItems = 0;
+            foreach (Item item in machineItems.Keys)
+                totalItems += machineItems[item];
+            return totalItems;
 
         }
+
+        public void RefillItems()
+        {
+            machineItems.Clear();
+            this.machineItems.Add(new Item("Coca Cola 330", 5.30m), 20);
+            this.machineItems.Add(new Item("Coca Cola Zero", 5.30m), 20);
+            this.machineItems.Add(new Item("Fuze Tea 500", 5.30m), 20);
+            this.machineItems.Add(new Item("Pepsi Max 330", 5.30m), 20);
+            this.machineItems.Add(new Item("Pepsi Max 500", 5.30m), 20);
+            this.machineItems.Add(new Item("Evian 500", 5.30m), 20);
+            this.machineItems.Add(new Item("Lays Barbecue", 5.30m), 20);
+            this.machineItems.Add(new Item("Lays Barbecue", 5.30m), 20);
+            this.machineItems.Add(new Item("Lays Sour Cream & Onion", 5.30m), 20);
+            this.machineItems.Add(new Item("Coca Cola 330", 5.30m), 20);
+
+        }
+        public void SellItem(Item item, decimal amountPaid)
+        {
+            machineBank += item.ItemPrice;
+            machineItems[item]--;
+        }
+        public void AddSaleRecord(SaleRecord saleRecord)
+        {
+            this.saleRecords.Push(saleRecord);
+        }
+
+        public void AddCardPaymentRecord(CardPayment cardPaymentRecord)
+        {
+            this.cardPaymentRecords.Push(cardPaymentRecord);
+        }
+
+        public void AddCashPaymentRecord(CashPayment cashPaymentRecord)
+        {
+            this.cashPaymentRecords.Push(cashPaymentRecord);
+        }
+        public override string ToString()
+        {
+            return string.Format("Unique Items: {0}, Total Items: {1}, Total Sales: {2}, Machine Bank: {3}",
+                machineItems.Count, GetTotalMachineItems(), saleRecords.Count, machineBank.ToString("C"));
+        }
+
     }
 
        

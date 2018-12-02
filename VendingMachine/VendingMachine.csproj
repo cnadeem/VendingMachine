@@ -111,15 +111,12 @@
     <Compile Include="Helper\VendingMachineHelper.cs" />
     <Compile Include="Models\CardPayment.cs" />
     <Compile Include="Models\CashPayment.cs" />
-    <Compile Include="Models\HasMoneyState.cs" />
     <Compile Include="Models\Item.cs" />
-    <Compile Include="Models\NoMoneyState.cs" />
     <Compile Include="Models\PaymentType.cs" />
     <Compile Include="Models\Record.cs" />
     <Compile Include="Models\SaleRecord.cs" />
     <Compile Include="Models\VendingMachineLog.cs" />
     <Compile Include="Models\VendingMachines.cs" />
-    <Compile Include="Models\IVendingMachineState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
