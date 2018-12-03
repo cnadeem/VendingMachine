@@ -55,7 +55,7 @@ namespace VendingMachine.Models
 
         public override string ToString()
         {
-            return string.Format("[Item Details] ID: {0}, Name: {1}, Price: {2}",
+            return string.Format("Product ID: {0}, Name: {1}, Price: {2}",
                 this.itemID, this.itemName, itemPrice.ToString("C"));
         }
 

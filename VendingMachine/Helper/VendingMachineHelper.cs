@@ -50,7 +50,7 @@ namespace VendingMachine.Helper
                 {
                     cashAmountInVendingMachine += cashSaleRecord.AmountPaid;
                 }
-                paymentRecordsDetails.AppendLine(string.Format("Vending Machine has Total cash as {0}", cashAmountInVendingMachine));
+                paymentRecordsDetails.AppendLine(string.Format("Vending Machine has Total cash payment as {0}", cashAmountInVendingMachine));
             }
 
             if (cardSaleRecords == null || cardSaleRecords.Count == 0)
@@ -63,7 +63,7 @@ namespace VendingMachine.Helper
                 {
                     cardAmountInVendingMachine += cardSaleRecord.AmountPaid;
                 }
-                paymentRecordsDetails.AppendLine(string.Format("Vending Machine has Total card as {0}", cardAmountInVendingMachine));
+                paymentRecordsDetails.AppendLine(string.Format("Vending Machine has Total card payment as {0}", cardAmountInVendingMachine));
             }
             return paymentRecordsDetails.ToString();
         }
@@ -90,9 +90,7 @@ namespace VendingMachine.Helper
             foreach (Item item in vendingMachine.MachineItems.Keys)
             {
                 productList.AppendLine(string.Format("{0} [IN STOCK: {1}]", item.ToString(), vendingMachine.MachineItems[item]));
-                productList.AppendLine("\n");
             }
-
             return productList.ToString();
         }
 
